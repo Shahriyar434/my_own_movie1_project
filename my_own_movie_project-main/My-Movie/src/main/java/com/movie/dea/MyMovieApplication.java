@@ -11,4 +11,5 @@ public class MyMovieApplication  {
 	}
 
 }
-//53 problemK
+//53 problema
+//dobavit svaqer,20,21,22,security

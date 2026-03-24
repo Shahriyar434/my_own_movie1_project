@@ -46,21 +46,34 @@
     <td th:text="${movie.rating}"></td>
     <td th:text="${movie.duration}"></td>
     <td>
-      <button th:href="@{/movies/{id}/edit(id=${movie.id})}" class="edit">Edit</button>
-      <form th:action= "@{/movies/{id}/delete(id=${movie.id})}" method="post" style="display:inline">
-        <button  class="delete" type="submit" onclick="myFunction()">Delete</button>
-        <script>
-          function myFunction() {
-            alert("Are you sure you want to delete?");
-          }
-        </script>
+      <a th:href="@{/movies/{id}/edit(id=${movie.id})}" class="edit">Edit</a>
+      <form th:action= "@{/movies/{id}/delete(id=${movie.id})}" method="post" style="display:inline" onsubmit="handleDelete()">
+        <button  class="delete" type="submit" >Delete</button>
+
       </form>
     </td>
   </tr>
 </table>
 
 
+<script>
+function handleDelete() {
+if (!confirm("Вы уверены, что хотите удалить?")) {
+return false;
+}
 
+setTimeout(() => {
+const box = document.getElementById("deleteNotification");
+box.style.display = "block";
+
+setTimeout(() => {
+box.style.display = "none";
+}, 2500);
+}, 400);
+
+return true;
+}
+</script>
 </body>
 
 <style>
