@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Add New Movie</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Funnel+Display:wght@300..800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #f2f0e6;
+            --form-bg: #e0ddd2;
+            --primary-green: #2e7d32;
+            --hover-green: #1b5e20;
+            --gray: #999999;
+            --error-red: #d32f2f;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            font-family: 'Funnel Display', sans-serif;
+            margin: 0;
+            padding: 50px 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        form {
+            width: 450px;
+            padding: 30px;
+            background-color: var(--form-bg);
+            border-radius: 12px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+            text-align: left; /* Better for reading labels */
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+            color: #444;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 12px;
+            font-size: 16px;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+            box-sizing: border-box; /* Crucial for width alignment */
+            font-family: inherit;
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: var(--primary-green);
+            box-shadow: 0 0 5px rgba(46, 125, 50, 0.2);
+        }
+
+        .error-text {
+            color: var(--error-red);
+            font-size: 14px;
+            margin-top: 4px;
+            font-weight: bold;
+        }
+
+        .button-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 30px;
+        }
+
+        button {
+            padding: 12px 35px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            background-color: var(--primary-green);
+            color: white;
+            transition: 0.3s;
+        }
+
+        button:hover {
+            background-color: var(--hover-green);
+            transform: translateY(-1px);
+        }
+
+        .btn-back {
+            padding: 12px 35px;
+            border-radius: 8px;
+            color: white;
+            background-color: var(--gray);
+            text-decoration: none;
+            font-weight: bold;
+            transition: 0.3s;
+            text-align: center;
+        }
+
+        .btn-back:hover {
+            background-color: #7a7a7a;
+        }
+    </style>
+</head>
+<body>
+
+<h1>New Movie</h1>
+
+<form th:action="@{/movies}" th:object="${movieForm}" method="post">
+
+    <div class="form-group">
+        <label th:text="#{movie.title}">Title</label>
+        <input type="text" th:field="*{title}" placeholder="Enter movie title..."/>
+        <div class="error-text" th:if="${#fields.hasErrors('title')}" th:errors="*{title}"></div>
+    </div>
+
+    <div class="form-group">
+        <label th:text="#{movie.genre}">Genre</label>
+        <input type="text" th:field="*{genre}" placeholder="e.g. Action, Drama..."/>
+        <div class="error-text" th:if="${#fields.hasErrors('genre')}" th:errors="*{genre}"></div>
+    </div>
+
+    <div class="form-group">
+        <label th:text="#{movie.releaseDate}">Release Date</label>
+        <input type="date" th:field="*{releaseDate}"/>
+        <div class="error-text" th:if="${#fields.hasErrors('releaseDate')}" th:errors="*{releaseDate}"></div>
+    </div>
+
+    <div style="display: flex; gap: 15px;">
+        <div class="form-group" style="flex: 1;">
+            <label th:text="#{movie.rating}">Rating</label>
+            <input type="number" step="0.1" th:field="*{rating}" placeholder="0.0"/>
+            <div class="error-text" th:if="${#fields.hasErrors('rating')}" th:errors="*{rating}"></div>
+        </div>
+
+        <div class="form-group" style="flex: 1;">
+            <label th:text="#{movie.duration}">Duration (min)</label>
+            <input type="number" step="1" th:field="*{duration}" placeholder="120"/>
+            <div class="error-text" th:if="${#fields.hasErrors('duration')}" th:errors="*{duration}"></div>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label>Director</label>
+        <select th:field="*{directorId}">
+            <option value="" disabled selected>Choose a Director</option>
+            <option th:each="d : ${directors}"
+                    th:value="${d.id}"
+                    th:text="${d.name}">
+            </option>
+        </select>
+        <div class="error-text" th:if="${#fields.hasErrors('directorId')}" th:errors="*{directorId}"></div>
+    </div>
+
+    <div class="button-container">
+        <a href="/movies" class="btn-back">Back</a>
+        <button type="submit" th:text="#{button.save}">Save</button>
+    </div>
+</form>
+
+</body>
+</html>
